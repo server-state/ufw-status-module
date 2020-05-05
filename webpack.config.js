@@ -8,5 +8,6 @@ module.exports = {
     module: {
     },
     externals: {
+        'shell-exec': 'shell-exec'
     }
 };

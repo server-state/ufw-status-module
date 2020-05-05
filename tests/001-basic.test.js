@@ -4,6 +4,7 @@ test('two plus two is four', () => {
 
 describe('Validity of return value of function', () => {
     test('JSON serializable', async (done) => {
+        jest.mock('shell-exec');
         const res = await (require('../src/')());
 
         expect(JSON.stringify(res)).toBeTruthy();
