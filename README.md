@@ -29,11 +29,11 @@ nodeUser ALL=(ALL) NOPASSWD: /usr/bin/ufw status
 - [x] Run `npm run test` (fix any errors that might occur)
 - [x] Run `npm run build` (fix any errors that might occur)
 - [x] Test by running `node` in the repo directory and requiring the module with `require('.')`. You can then test it interactively.
-- [ ] Publish as `v0.0.9` to npm to ensure CI can publish in the future (use `--access=public` for scoped packages
+- [x] Publish as `v0.0.9` to npm to ensure CI can publish in the future (use `--access=public` for scoped packages
 - [x] Bump version number in `package.json` to `0.1.0`, commit and push to GitHub
-- [ ] Add `gh_token` and `npm_token` to the GitHub repo secrets to allow CI publishing
-- [ ] Add a tag called `v0.1.0` and push it to GitHub
-- [ ] Watch GitHub actions publish the new version for you :wink:
+- [x] Add `gh_token` and `npm_token` to the GitHub repo secrets to allow CI publishing
+- [x] Add a tag called `v0.1.0` and push it to GitHub
+- [x] Watch GitHub actions publish the new version for you :wink:
 
 **For every new version**
 - [ ] Add all dependencies **you** have added as externals in the `webpack.config.js`
