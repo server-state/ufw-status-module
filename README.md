@@ -1,9 +1,18 @@
-# @server-state/ufw-status-module
+# ufw-status-module
+|Info|Value|
+|---|---|
+|Repository|https://github.com/server-state/ufw-status-module|
+|NPM Package|[`@server-state/ufw-status-module`](https://www.npmjs.com/package/@server-state/ufw-status-module)|
+|Package version|[![npm version](https://badge.fury.io/js/%40server-state%2Fufw-status-module.svg)](https://www.npmjs.com/package/@server-state/ufw-status-module)|
+|CI Build|[![Build Status](https://travis-ci.com/server-state/ufw-status-module.svg?branch=master)](https://travis-ci.com/server-state/ufw-status-module)|
+|Issues|[GitHub Issues](https://github.com/server-state/ufw-status-module/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc)|
+
+## Abstract
 A module for querying the status of a UFW firewall (requires sudo privileges)
 
-This output generates a straight base to provide other applications useful information like Server State example [Web Client](https://github.com/server-state/web-client).
+This official [*Server State Server Module*](https://specs.server-state.tech/#/terminology/server-module) belongs to the organization [Server State](https://github.com/server-state).
 
-## Adding `sudo` privileges
+### Setup
 To successfully use this module, you'll need to grant the user executing the command (here, we'll call him `nodeUser`)
 sudo (or root) execution rights for the command `ufw status`. To do this, please add the following `server-state-ufw-status-module` file to
 `/etc/sudoers.d/`:
@@ -12,39 +21,47 @@ sudo (or root) execution rights for the command `ufw status`. To do this, please
 nodeUser ALL=(ALL) NOPASSWD: /usr/bin/ufw status
 ```
 
-### Checklist for using this template
-- [x] Change name and description in this README
-- [x] Change the package name in the `package.json`
-- [x] Change the repository, issue and other urls as well as the `author` field in the `package.json`, as needed
-- [x] Familiarize yourself with the specifications for modules, which can be found in https://specs.server-state.tech/.
 
-**Afterwards**
-- [x] Write source code for your module in the `src` module
-- [ ] Adjust the existing test in `tests/001-basic.test.js` so that your *SMF* gets passed the necessery parameters and has the necessary mocks to pass. **Do not delete this test!** It is vital that the data you return is JSON-serializable and therefore, this test is required.
-- [ ] Write tests for your code (until you reach 100 % coverage, this has to get trusted to get deployed to production servers) in the tests folder
+## Input
+### Type
+```typescript
+undefined
+```
 
-**Afterwards**
-- [x] Add all dependencies **you** have added as externals in the `webpack.config.js`
-- [x] Run `npm run lint` (fix any errors that get shown)
-- [x] Run `npm run test` (fix any errors that might occur)
-- [x] Run `npm run build` (fix any errors that might occur)
-- [x] Test by running `node` in the repo directory and requiring the module with `require('.')`. You can then test it interactively.
-- [x] Publish as `v0.0.9` to npm to ensure CI can publish in the future (use `--access=public` for scoped packages
-- [x] Bump version number in `package.json` to `0.1.0`, commit and push to GitHub
-- [x] Add `gh_token` and `npm_token` to the GitHub repo secrets to allow CI publishing
-- [x] Add a tag called `v0.1.0` and push it to GitHub
-- [x] Watch GitHub actions publish the new version for you :wink:
+### Description
+No input is needed for this module
 
-**For every new version**
-- [ ] Add all dependencies **you** have added as externals in the `webpack.config.js`
-- [ ] Run `npm run lint` (fix any errors that get shown)
-- [ ] Run `npm run test` (fix any errors that might occur)
-- [ ] Run `npm run build` (fix any errors that might occur)
-- [ ] Test by running `node` in the repo directory and requiring the module with `require('.')`. You can then test it interactively.
-- [ ] Bump version number in `package.json`
-- [ ] Add a tag called `v[package.json version number]` and push it to GitHub
-- [ ] Watch GitHub actions publish the new version for you :wink:
+## Output
+This is using
 
----
+- [x] A standard data format as defined in [Data Formats](/arch/data-formats.md)
+- [x] A custom data format described below
 
-This official module belongs to the organization [Server State](https://github.com/server-state).
+### Custom data format specifications
+Type: [`TableData`](https://types.server-state.tech/modules/serverstate.dataformats.html#tabledata) -compatible
+
+```ts
+{  
+    type: 'ufw-status',
+    status: 'active' | 'inactive',
+    _fields: string[],
+    rows: Array<{
+        [_field: string]: string | number | boolean
+    }>
+}
+```
+
+### Specifications about the information in the return variable
+n/a
+
+### Exceptions (if applicable)
+#### `sudo ufw status` returned with an exit code other than `0`
+If `sudo ufw status` returns with an exit code other than `0`, an Error containing the `stderr` output in its message gets thrown.
+
+## Performance
+The module performs the tasks in a runtime-complexity of
+
+_O(n)_
+
+where _n_ is the number of rules in the status (i.e., here, table rows).
+
