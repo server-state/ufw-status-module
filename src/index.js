@@ -14,15 +14,21 @@ module.exports = async function () {
 
         const _fields = ['To', 'Action', 'From'];
 
-        const toIndex = lines[1].indexOf('To');
-        const actionIndex = lines[1].indexOf('Action');
-        const fromIndex = lines[1].indexOf('From');
+        let rows;
 
-        const rows = lines.slice(3).map(rowString => ({
-            'To': rowString.substring(toIndex, actionIndex - 1).trim(),
-            'Action': rowString.substring(actionIndex, fromIndex - 1).trim(),
-            'From': rowString.substring(fromIndex).trim(),
-        }));
+        if (status === 'active') {
+            const toIndex = lines[1].indexOf('To');
+            const actionIndex = lines[1].indexOf('Action');
+            const fromIndex = lines[1].indexOf('From');
+
+            rows = lines.slice(3).map(rowString => ({
+                'To': rowString.substring(toIndex, actionIndex - 1).trim(),
+                'Action': rowString.substring(actionIndex, fromIndex - 1).trim(),
+                'From': rowString.substring(fromIndex).trim(),
+            }));
+        } else {
+            rows = [];
+        }
 
         return ({type: 'ufw-status', status, _fields, rows});
     } else {
