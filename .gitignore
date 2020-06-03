@@ -63,3 +63,5 @@ typings/
 # IDE/editor configs
 .idea
 .vscode
+
+/index.js
